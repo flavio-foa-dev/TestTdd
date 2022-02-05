@@ -45,6 +45,27 @@ Média	Situação
 Menor que 7	Reprovado
 Igual ou maior que 7	Aprovado
 
+  o primeiro passo que precisamos daar é pensar na estrutura do nosso codigo;
+
+- quantos e quais paramentros ela ira receber
+- Qual tipo de resposta ela ira retorna ?
+
+No nosso caso nossa função devera receber um paramentro "media" e responderar com  aprovado ou reprovado.
+tendo isso em mente esse comportamento de retorno , tendo esse  questionamento ja poderiamos parti para implementação docodigo
+
+```
+function calculaSituacao(media) {
+  if (media > 7) {
+    return 'aprovado';
+  }
+
+  return 'reprovado';
+}
+
+module.exports = calculaSituacao;
+```
+
+
 
 
 
