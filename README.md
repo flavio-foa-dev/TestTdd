@@ -402,3 +402,288 @@ Dessa forma, pensando em passos para o TDD, podemos pensar da seguinte maneira:
 
 Se precisar fazer algum ajuste nos testes em algum momento, não se preocupe! Isso é perfeitamente normal, visto que estamos escrevendo testes para código que ainda não existe, e um detalhe ou outro pode escapulir à mente.
 
+### Mais testes de conteudo
+
+Até agora, voce viu como transfomar requesitos em testes, como escreve-los com ajuda do `mocha e do chai` e o que é tdd. Vamos fazer mais um exemplo juntos utilizaando tudo issso.]
+
+Escrevemos uma função que lẽ o conteudo de um arquivo. Essa função:
+
+- Receberá um parâmetro com o nome do arquivo a ser lido. Esse arquivo deverá esta na pasta io-files ;
+- Caso o arquivo solicitado exista, responderá uma string com o conteúdo do arquivo;
+- Caso o arquivo solicitado não exista, deverá responder null .
+
+Seguindo o TDD, vamos começar estruturando os testes com o mocha e com o chai . Antes de mais nada, vamos criar um novo diretório raiz para receber o nosso pacote node e instalar nossas ferramentas de testes:
+
+mkdir examples2
+
+cd examples2
+
+mkdir io-test && cd io-test # Criando e entrando no diretório do nosso projeto
+
+npm init # Iniciando o npm
+
+npm install --save-dev mocha chai # Instalando as ferramentas de testes
+
+Agora basta adicionar o seguinte script em seu package.json :
+io-test/package.json
+
+
+{
+  //
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha test.js"
+  },
+  //
+}
+
+## Mocha
+
+Feito isso, vamos escrever nosso arquivo test.js . Começaremos estruturando os requisitos em forma de testes com o mocha :
+io-test/test.js
+
+
+describe('leArquivo', () => {
+  describe('Quando o arquivo existe', () => {
+    describe('a resposta', () => {
+      it('é uma string', () => {
+        //
+      });
+
+      it('é igual ao conteúdo do arquivo', () => {
+        //
+      });
+    });
+  });
+
+  describe('Quando o arquivo não existe', () => {
+    describe('a resposta', () => {
+      it('é igual a "null"', () => {
+        //
+      });
+    });
+  });
+});
+
+## Chai
+
+Em seguida vamos adicionar as asserções com o chai:
+io-test/test.js
+
+
+const { expect } = require('chai');
+
+const leArquivo = require('./leArquivo');
+
+const CONTEUDO_DO_ARQUIVO = 'VQV com TDD';
+
+describe('leArquivo', () => {
+  describe('Quando o arquivo existe', () => {
+    describe('a resposta', () => {
+      const resposta = leArquivo('arquivo.txt');
+
+      it('é uma string', () => {
+        expect(resposta).to.be.a('string');
+      });
+
+      it('é igual ao conteúdo do arquivo', () => {
+        expect(resposta).to.be.equals(CONTEUDO_DO_ARQUIVO);
+      });
+    });
+  });
+
+  describe('Quando o arquivo não existe', () => {
+    it('a resposta é igual a "null"', () => {
+      const resposta = leArquivo('arquivo_que_nao_existe.txt');
+
+      expect(resposta).to.be.equal(null);
+    });
+  });
+});
+
+Aqui utilizamos uma nova asserção do chai , o a , que validará o "tipo" daquele retorno. Como se tivéssemos escrito: "espera a resposta ser uma string" (ou expect response to be a string ).
+Para que o teste seja executado, precisamos criar o arquivo que irá conter a função. Vamos começar com uma função vazia apenas para conseguir importá-la no arquivo de teste:
+io-test/leArquivo.js
+
+
+module.exports = () => {
+    //
+}
+
+Agora vamos rodar o teste e ver o resultado:
+
+
+npm test # ou npm run test
+
+npm test # ou npm run test
+
+
+Teremos a seguinte saída em nosso console:
+
+Implementação
+
+io-test/leArquivo.js
+
+
+const fs = require('fs');
+
+function leArquivo(nomeDoArquivo) {
+  try {
+    const conteudoDoArquivo = fs.readFileSync(nomeDoArquivo, 'utf8');
+
+    return conteudoDoArquivo;
+  } catch (err) {
+    return null;
+  }
+}
+
+module.exports = leArquivo;
+
+
+## Isolando nossos testes
+
+Antes de continuar, precisamos ter atenção a um ponto: nossos testes não devem realizar operações de IO ( input / output ), ou seja, não devem acessar nem o disco, nem a rede.
+Quando criamos aplicações de frontend, estamos na maior parte do tempo, manipulando o DOM. Quando falamos de javascript no backend com NodeJS, constantemente estamos realizando operações com IO, ou seja, nossa aplicação se comunica com o sistema de arquivos ou com a rede. Exemplos dessas comunicações são a leitura e escrita de arquivos, chamadas a APIs ou consultas em um banco de dados.
+Sendo assim, ao escrever testes, será muito comum precisarmos testar códigos que fazem esse tipo de operação de integração , o que pode adicionar complexidade aos nossos testes.
+Vejamos o exemplo que estamos construíndo: para garantir nossos cenários, precisaríamos, além de criar o teste e realizar a chamada à nossa função leArquivo , preparar um arquivo para ser lido com o conteúdo que esperamos ler.
+Pode parecer simples, mas por exemplo, para testar uma função que acessa um banco de dados, precisaríamos disponibilizar uma instância desse banco de dados para que nossos testes se conectassem, e precisaríamos garantir que existissem registros com as diversas situações que nossos testes precisassem testar. Além disso, após a execução dos nossos testes, tais registros provavelmente teriam sido alterados e teríamos que garantir que voltassem ao estado inicial para podermos executar nosso teste novamente.
+Resumindo: criar testes para códigos que executem operações de IO nos dá diversas complexidades.
+
+E agora?
+Dessa forma, o ideal é não permitir que nosso código realize essas operações de IO de fato, mas apenas simular que elas estão sendo realizadas. Dessa forma, isolamos o IO de nossos testes, garantindo que um banco de dados inconsistente ou um arquivo faltando na hora de executar os testes não faça com que tudo vá por água abaixo
+Para isso existe o conceito de Test Doubles , que são objetos que fingem ser o outro objeto para fins de testes.
+Com esses objetos, podemos simular, por exemplo, as funções do módulo fs . Nosso código irá pensar que está chamando as funções do fs , porém, estará chamando as nossas funções, que se comportarão da maneira que queremos, mas sem a necessidade de escrever, ler ou ter dependência de arquivo reais.
+Para nos ajudar com esse tipo de coisa, usaremos uma ferramenta chamada sinon que veremos a seguir.
+
+## Sinon
+
+O Sinon é uma ferramenta que fornece funções para diversos tipos dos Test Doubles ou, numa tradução livre, Dublês de Testes (remetendo aos dublês de filmes).
+No momento focaremos em um tipo de Test Double, o stub . Stubs são objetos que podemos utilizar para simular interações com dependências externas ao que estamos testando de fato (na literatura, é comum referir-se ao sistema sendo testado como SUT , que significa System under Test).
+Primeiro, vamos fazer a instalação do Sinon:
+
+npm install --save-dev sinon
+
+Agora vamos ver na prática como podemos criar um stub para a função de leitura do fs :
+
+const fs = require('fs');
+const sinon = require('sinon');
+
+sinon.stub(fs, 'readFileSync')
+  .returns('Valor a ser retornado');
+
+
+Perceba que precisamos importar o módulo fs e, então, falamos para o sinon criar um stub para a função readFileSync que retornará 'Valor a ser retornado' , conforme especificamos na chamada para returns .
+
+
+## Stub
+
+Vamos modificar nosso teste para utilizar o stub:
+io-test/test.js
+
+const fs = require('fs');
+const sinon = require('sinon');
+const { expect } = require('chai');
+
+const leArquivo = require('./leArquivo');
+
+const CONTEUDO_DO_ARQUIVO = 'VQV com TDD';
+
+sinon.stub(fs, 'readFileSync').returns(CONTEUDO_DO_ARQUIVO);
+
+describe('leArquivo', () => {
+  describe('Quando o arquivo existe', () => {
+    describe('a resposta', () => {
+      const resposta = leArquivo('arquivo.txt');
+
+      it('é uma string', () => {
+        expect(resposta).to.be.a('string');
+      });
+
+      it('é igual ao conteúdo do arquivo', () => {
+        expect(resposta).to.be.equals(CONTEUDO_DO_ARQUIVO);
+      });
+    });
+  });
+
+  describe('Quando o arquivo não existe', () => {
+    it('a resposta é igual a "null"', () => {
+      const resposta = leArquivo('arquivo_que_nao_existe.txt');
+
+      expect(resposta).to.be.equal(null);
+    });
+  });
+});
+
+
+Perceba que no nosso stub definimos para retornar o mesmo valor que esperamos na nossa asserção, ao rodar esse teste teremos o seguinte resultado:
+
+
+Perceba que os testes que esperavam o valor retornados pelo stub funcionaram. Porém, onde o valor esperado era outro, o teste passou a quebrar.
+Isso aconteceu porque criamos um comportamento falso único para a função, que é aplicado para todos os testes. Entretanto, em cada situação é esperado um valor diferente:
+Quando o arquivo passado existe é esperado que ela retorne o valor;
+Quando o arquivo passado não existe é esperado um erro;
+Sendo assim, o ideal é sempre criarmos Tests Doubles para o escopo de cada cenário de teste.
+O mocha nos fornece duas funções chamadas before e after . Como o nome diz, são funções que serão executadas "antes" e "depois" daquele "bloco" de testes, ou seja, daquele describe .
+Vamos adicionar esse conceito ao nosso teste:
+
+
+const fs = require('fs');
+const sinon = require('sinon');
+const { expect } = require('chai');
+
+const leArquivo = require('./leArquivo');
+
+const CONTEUDO_DO_ARQUIVO = 'VQV com TDD';
+
+describe('leArquivo', () => {
+  describe('Quando o arquivo existe', () => {
+    before(() => {
+      sinon.stub(fs, 'readFileSync').returns(CONTEUDO_DO_ARQUIVO);
+    });
+
+    after(() => {
+      fs.readFileSync.restore();
+    });
+
+    describe('a resposta', () => {
+      it('é uma string', () => {
+        const resposta = leArquivo('arquivo.txt');
+
+        expect(resposta).to.be.a('string');
+      });
+
+      it('é igual ao conteúdo do arquivo', () => {
+        const resposta = leArquivo('arquivo.txt');
+
+        expect(resposta).to.be.equals(CONTEUDO_DO_ARQUIVO);
+      });
+    });
+  });
+
+  describe('Quando o arquivo não existe', () => {
+    before(() => {
+      sinon
+        .stub(fs, 'readFileSync')
+        .throws(new Error('Arquivo não encontrado'));
+    });
+
+    after(() => {
+      fs.readFileSync.restore();
+    });
+
+    describe('a resposta', () => {
+      it('é igual a "null"', () => {
+        const resposta = leArquivo('arquivo_que_nao_existe.txt');
+
+        expect(resposta).to.be.equal(null);
+      });
+    });
+  });
+});
+
+
+Perceba que antes de cada cenário de teste nós alteramos o comportamento do método do fs criando um stub e, depois da execução do teste, utilizamos a função restore() que o sinon atribui aos stubs para retornarmos o comportamento padrão daquela função.
+Ao rodar nosso teste agora, temos todos os comportamentos esperados devidamente testados!
+
+
+Perceba que não foi necessário fazer nenhum IO de verdade, não precisamos criar um arquivo real com o conteúdo do teste. Devemos ter esse conceito sempre em mente quando estivermos falando sobre testes.

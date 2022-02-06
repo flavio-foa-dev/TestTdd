@@ -1,0 +1,309 @@
+Exercícios
+Hora de pôr a mão na massa!
+back-end
+Antes de começar: versionando seu código
+Para versionar seu código, utilize o seu repositório de exercícios. 😉
+Abaixo você vai ver exemplos de como organizar os exercícios do dia em uma branch, com arquivos e commits específicos para cada exercício. Você deve seguir este padrão para realizar os exercícios a seguir.
+Abra a pasta de exercícios:
+Copiar
+$ cd ~/trybe-exercicios
+Certifique-se de que está na branch main e ela está sincronizada com a remota. Caso você tenha arquivos modificados e não comitados, deverá fazer um commit ou checkout dos arquivos antes deste passo.
+Copiar
+$ git checkout main
+$ git pull
+A partir da main, crie uma branch com o nome exercicios/25.3 (bloco 25, dia 3)
+Copiar
+$ git checkout -b exercicios/25.3
+Caso seja o primeiro dia deste módulo, crie um diretório para ele e o acesse na sequência:
+Copiar
+$ mkdir back-end
+$ cd back-end
+Caso seja o primeiro dia do bloco, crie um diretório para ele e o acesse na sequência:
+Copiar
+$ mkdir bloco-25-introducao-ao-desenvolvimento-web-com-nodejs
+$ cd bloco-25-introducao-ao-desenvolvimento-web-com-nodejs
+Crie um diretório para o dia e o acesse na sequência:
+Copiar
+$ mkdir dia-3-testes-com-nodejs
+$ cd dia-3-testes-com-nodejs
+Os arquivos referentes aos exercícios deste dia deverão ficar dentro do diretório ~/trybe-exercicios/back-end/block-25-introducao-ao-desenvolvimento-web-com-nodejs/dia-3-testes-com-nodejs. Lembre-se de fazer commits pequenos e com mensagens bem descritivas, preferencialmente a cada exercício resolvido.
+
+Verifique os arquivos alterados/adicionados:
+Copiar
+$ git status
+On branch exercicios/25.3
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  modified:   exercicio-1
+
+Adicione os arquivos que farão parte daquele commit:
+Copiar
+# Se quiser adicionar os arquivos individualmente
+$ git add caminhoParaArquivo
+
+# Se quiser adicionar todos os arquivos de uma vez, porém, atente-se
+para não adicionar arquivos indesejados acidentalmente
+$ git add --all
+
+Faça o commit com uma mensagem descritiva das alterações:
+Copiar
+$ git commit -m "Mensagem descrevendo alterações"
+Você pode visualizar o log de todos os commits já feitos naquela branch com git log.
+Copiar
+$ git log
+commit 100c5ca0d64e2b8649f48edf3be13588a77b8fa4 (HEAD -> exercicios/25.3)
+Author: Tryber Bot <tryberbot@betrybe.com>
+Date:   Fry Sep 27 17:48:01 2019 -0300
+
+    Exercicio 2 - mudando o evento de click para mouseover, tirei o alert e coloquei pra quando clicar aparecer uma imagem do lado direito da tela
+
+commit c0701d91274c2ac8a29b9a7fbe4302accacf3c78
+Author: Tryber Bot <tryberbot@betrybe.com>
+Date:   Fry Sep 27 16:47:21 2019 -0300
+
+    Exercicio 2 - adicionando um alert, usando função e o evento click
+
+commit 6835287c44e9ac9cdd459003a7a6b1b1a7700157
+Author: Tryber Bot <tryberbot@betrybe.com>
+Date:   Fry Sep 27 15:46:32 2019 -0300
+
+    Resolvendo o exercício 1 usando eventListener
+Agora que temos as alterações salvas no repositório local precisamos enviá-las para o repositório remoto. No primeiro envio, a branch exercicios/25.3 não vai existir no repositório remoto, então precisamos configurar o remote utilizando a opção --set-upstream (ou -u, que é a forma abreviada).
+Copiar
+$ git push -u origin exercicios/25.3
+Após realizar o passo 9, podemos abrir a Pull Request a partir do link que aparecerá na mensagem do push no terminal, ou na página do seu repositório de exercícios no GitHub através de um botão que aparecerá na interface. Escolha a forma que preferir e abra a Pull Request. De agora em diante, você repetirá o fluxo a partir do passo 7 para cada exercício adicionado, porém como já definimos a branch remota com -u anteriormente, agora podemos simplificar os comandos para:
+Copiar
+# Quando quiser enviar para o repositório remoto
+$ git push
+
+# Caso você queria sincronizar com o remoto, poderá utilizar apenas
+$ git pull
+Quando terminar os exercícios, seus códigos devem estar todos commitados na branch exercicios/25.3, e disponíveis no repositório remoto do GitHub. Pra finalizar, compartilhe o link da Pull Request no canal de Code Review para a monitoria e/ou colegas revisarem. Faça review você também, lembre-se que é muito importante para o seu desenvolvimento ler o código de outras pessoas. 🤜🏼🤛🏼
+© Trybe 2022
+·
+Manual da Pessoa Estudante
+Feito e constantemente atualizado pelo time Trybe com Elixir, Phoenix, React, Tailwind CSS e 💚
+
+Agora a prática
+Exercício 1 : Estruture os testes utilizando mocha e chai para um função que irá dizer se um número é "positivo", "negativo" ou "neutro":
+Essa função irá receber um número como parâmetro e retornar uma string como resposta;
+Quando o número passado for maior que 0 deverá retornar "positivo", quando for menor que 0 deverá retornar "negativo" e quando igual a 0 deverá retornar "neutro";
+Descreva todos os cenário de teste utilizando describes ;
+Descreva todos os testes que serão feitos utilizando its ;
+Crie as asserções validando se os retornos de cada cenário tem o tipo e o valor esperado.
+Exercício 2 : Implemente a função apresentada no exercício 1, garantindo que ela irá passar em todos os testes que você escreveu.
+DICA : Lembre-se de adicionar o script de test no package.json e de instalar as dependências.
+Exercício 3 Adicione à função um tratamento para casos em que o parâmetro informado não seja do tipo Number .
+Adicione o cenário em seu arquivo de testes, passando um valor de tipo diferente a Number para a função;
+Adicione uma asserção para esperar que o valor retornado para esse caso seja igual uma string "o valor deve ser um número";
+Implemente em sua função tal validação para que o teste passe.
+Exercício 4 Crie testes para uma função que escreverá um conteúdo em um arquivo específico.
+Essa função deverá receber dois parâmetros: o nome do arquivo e o conteúdo desse arquivo.
+Após concluir a escrita do arquivo ela deverá retornar um ok .
+Descreva todos os cenários de teste utilizando describes ;
+Descreva todos os testes que serão feitos utilizando its ;
+Crie as asserções validando se o retorno da função possui o valor e tipo esperado.
+Exercício 5 Implemente a função descrita no exercício 4.
+Crie a função descrita no exercício 4 utilizando o módulo fs do node.
+Adapte os testes adicionando stub ao módulo utilizado do fs , isolando assim o teste.
+Garanta que todos os testes escritos no exercício 4 irão passar com sucesso.
+
+
+
+
+
+Gabarito dos exercícios
+A seguir encontra-se uma sugestão de solução para os exercícios propostos.
+Exercício 1
+Estruture os testes utilizando mocha e chai para um função que irá dizer se um número é "positivo", "negativo" ou "neutro":
+Essa função irá receber um número como parâmetro e retornar uma string como resposta;
+Quando o número passado for maior que 0 deverá retornar "positivo", quando for menor que 0 deverá retornar "negativo" e quando igual a 0 deverá retornar "neutro";
+Descreva todos os cenários de teste utilizando describes ;
+Descreva todos os testes que serão feitos utilizando its ;
+Crie as asserções validando se os retornos de cada cenário tem o tipo e o valor esperado.
+Resolução
+Copiar
+const { expect } = require('chai');
+
+const numNaturalFn = require('./numerosNaturais');
+
+describe('Executa a função numNaturalFn', () => {
+  describe('quando o número for maior que 0', () => {
+    describe('a resposta', () => {
+      it('é uma "string"', () => {
+        const resposta = numNaturalFn(10);
+
+        expect(resposta).to.be.a('string');
+      });
+
+      it('é igual a "positivo"', () => {
+        const resposta = numNaturalFn(10);
+
+        expect(resposta).to.be.equals('positivo');
+      });
+    });
+  });
+
+  describe('quando o número for menor que 0', () => {
+    describe('a resposta', () => {
+      it('é uma "string"', () => {
+        const resposta = numNaturalFn(-10);
+
+        expect(resposta).to.be.a('string');
+      });
+
+      it('é igual a "negativo"', () => {
+        const resposta = numNaturalFn(-10);
+
+        expect(resposta).to.be.equals('negativo');
+      });
+    });
+  });
+
+  describe('quando o número for igual a 0', () => {
+    describe('a resposta', () => {
+      it('é uma "string"', () => {
+        const resposta = numNaturalFn(0);
+
+        expect(resposta).to.be.a('string');
+      });
+
+      it('é igual a "neutro"', () => {
+        const resposta = numNaturalFn(0);
+
+        expect(resposta).to.be.equals('neutro');
+      });
+    });
+  });
+});
+Exercício 2
+Implemente a função apresentada no exercício 1, garantindo que ela irá passar em todos os testes que você escreveu.
+DICA : Lembre-se de adicionar o script de test no package.json e de instalar as dependências.
+Resolução
+Copiar
+module.exports = (numero) => {
+  if (numero > 0) {
+    return 'positivo';
+  }
+
+  if (numero < 0) {
+    return 'negativo';
+  }
+
+  return 'neutro';
+};
+Exercício 3
+Adicione à função um tratamento para casos em que o parâmetro informado não seja do tipo number .
+Adicione o cenário em seu arquivo de testes, passando um valor de tipo diferente a number para a função;
+Adicione uma asserção para esperar que o valor retornado para esse caso seja igual uma string "o valor deve ser um número";
+Implemente em sua função tal validação para que o teste passe.
+Resolução
+Copiar
+// demais casos de teste
+
+describe('quando o parâmetro passado não é um número', () => {
+  describe('a resposta', () => {
+    it('é uma "string"', () => {
+      const resposta = numNaturalFn('AAAA');
+
+      expect(resposta).to.be.a('string');
+    });
+
+    it('é igual a "o parâmetro deve ser um número"', () => {
+      const resposta = numNaturalFn('AAAA');
+
+      expect(resposta).to.be.equals('o parâmetro deve ser um número');
+    });
+  });
+});
+Copiar
+module.exports = (numero) => {
+  if (typeof numero !== 'number') {
+    return 'o parâmetro deve ser um número';
+  }
+
+  if (numero > 0) {
+    return 'positivo';
+  }
+
+  if (numero < 0) {
+    return 'negativo';
+  }
+
+  return 'neutro';
+};
+Exercício 4
+Crie testes para uma função que escreverá um conteúdo em um arquivo específico.
+Essa função deverá receber dois parâmetros: o nome do arquivo e o conteúdo desse arquivo.
+Após concluir a escrita do arquivo ela deverá retornar um ok .
+Descreva todos os cenários de teste utilizando describes ;
+Descreva todos os testes que serão feitos utilizando its ;
+Crie as asserções validando se o retorno da função possui o valor e tipo esperado.
+Resolução
+Copiar
+const fs = require('fs');
+const { expect } = require('chai');
+
+const escrevaArquivo = require('./escrevaArquivo');
+
+describe('Executa a função escrevaArquivo', () => {
+  describe('a resposta', () => {
+    it('é uma "string"', () => {
+      const resposta = escrevaArquivo('arquivo.txt', '#vqv conteúdo');
+
+      expect(resposta).to.be.a('string');
+    });
+
+    it('é igual a "ok"', () => {
+      const resposta = escrevaArquivo('arquivo.txt', '#vqv conteúdo');
+
+      expect(resposta).to.be.equals('ok');
+    });
+  });
+});
+Exercício 5
+implemente a função descrita no exercício 4.
+Crie a função descrita no exercício 4 utilizando o módulo fs do Node.
+Adapte os testes adicionando stub ao módulo utilizado do fs , isolando assim o teste.
+Garanta que todos os testes escritos no exercício 4 irão passar com sucesso.
+Resolução
+Copiar
+const fs = require('fs');
+const sinon = require('sinon');
+const { expect } = require('chai');
+
+const escrevaArquivo = require('./escrevaArquivo');
+
+describe('Executa a função escrevaArquivo', () => {
+  before(() => {
+    sinon.stub(fs, 'writeFileSync');
+  });
+
+  after(() => {
+    fs.writeFileSync.restore();
+  });
+
+  describe('a resposta', () => {
+    it('é uma "string"', () => {
+      const resposta = escrevaArquivo('arquivo.txt', '#vqv conteúdo');
+
+      expect(resposta).to.be.a('string');
+    });
+
+    it('é igual a "ok"', () => {
+      const resposta = escrevaArquivo('arquivo.txt', '#vqv conteúdo');
+
+      expect(resposta).to.be.equals('ok');
+    });
+  });
+});
+Copiar
+const fs = require('fs');
+
+module.exports = (nomeDoArquivo, conteudoDoArquivo) => {
+  fs.writeFileSync(`${__dirname}/${nomeDoArquivo}`, conteudoDoArquivo);
+
+  return 'ok';
+};
