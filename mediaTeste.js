@@ -1,0 +1,1 @@
+console.log("quando  a média for maior que 7, retorna aprovado:")

@@ -201,5 +201,48 @@ module.exports = calculadora;
 Evidentemente isso pode variar a depender do contexto e da forma como os grupos trabalham, mas no geral, existe sempre uma relação de escopo/interação que é definida durante o desenvolvimento de testes e quanto maior o número de escopos diferentes e situações de interação prevista dentro desses escopos, maior a coesão e a confiabilidade do seu projeto.
 Aqui, vamos trabalhar com testes unitários pois são mais simples e com a prática, esse padrão tornará testes complexos mais fáceis de entender.
 
+## Escrevendo Testes
+
+Para exemplificar o processo de escrita de codigo, vamos criar um exemmplo
+O primeiro passo e compreender, atraves dos requesitos, a estrutura que desejamos ter e os comportamentos esperados, Ja desenvolvemos esses pensamentos  anteriormente, retornado as termos
+
+
+  - sobre a estrutura que
+    - nossa função devera receber um parametro
+    - responder retorno
+  - sobre o comportamento esperado vamos fazer de seguinte forma
+    1. Se passado um valor menor que 7 , por exemplo 4 , a resposta deve ser "reprovado" ; 2 - Se passado um valor maior que 7 , por exemplo 9 , a resposta ser "aprovado" ; 3 - E, não podemos esquecer do "OU", sendo assim, se passado 7 , a resposta deve ser "aprovado" ;
+
+essa estrutura é o que precisamos antes mesmo de escrever o codiugo.
+
+## estrutura testes com o Mocha
+o `mocha` e um framework de teste para js, isso significa que ele nos ajuda a arquitetar os nossos testes, nos fornecendo a estrutura e interface para escrevermos os nossos testes.
+
+Vamos começar pelos comportamento. da mesma forma como escrevemos os comportamento acima, temos que faze-lo nos testes  para dizermos o que estamos testando naquele caso espécifico. Para isso, o mocha nos fornece duas palvaras reservadas o `describe e o it`.
+
+O describe nos permite adicionar uma descrição para um teste especifico um grupo de testes. Ja o it nos permite sinalizar exatamente o cenario de teste que estamos testando naquele ponto.
+Relembrando os testes que escrevemos  na mao  o mocha subistitui aqueles logs que utilizamos para descreever cada teste;
+
+console.log('Quando a média for maior que 7, retorna "aprovado":');
+
+Bora ver na prática como podemos fazer isso com a ajuda do mocha . Esse mesmo cenário 1 , utilizando describe para descrever o cenário ficaria assim:
+
+
+describe('Quando a média for menor que 7', () => {
+  //
+});
+
+Perceba que o describe aceita dois parâmetros: o primeiro é a descrição e o segundo uma função para executar o cenário de teste. Outro ponto de atenção é que não é necessário importar o mocha em nosso arquivo, suas palavras reservadas serão interpretadas quando executamos o testes, mas veremos mais adiante como fazê-lo.
+Descrito nosso comportamento, vamos adicionar o que será testado de fato, ou seja, o que é esperado. Para isso, temos o it
+
+
+describe('Quando a média for menor que 7', () => {
+  it('retorna "reprovado"', () => {
+    //
+  });
+});
+
+A sintaxe do it é bem semelhante à do describe : ela aceita uma string, qual o comportamento a ser testado, e uma função que executa os testes de fato.
+
 
 
