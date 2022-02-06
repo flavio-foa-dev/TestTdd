@@ -305,3 +305,100 @@ describe('Quando a média for menor que 7', () => {
 
 Perceba que o to e o be não alteraram em nada a validação realizada, porém, a leitura fica muito mais fluída e natural, é como se estivéssemos dito que nosso teste "espera a resposta ser igual a "reprovado".
 Podemos encontrar um pouco mais sobre esse getters na documentação oficial do chai , em language chains .
+
+## executando testes
+antes de começarmos, precisamos criar nosso pacote node para incluirmos os scripts necessario em `package.jsonn`:
+
+npm init # Iniciando o npm
+
+Testes escrito, vamos ver como executá-lo. Como dito antes, o `mocha` é o responsavel por executar nossos testes. Ele entenderá as palavras reservadas `describe` e `it`, assim como estrutura do nosso teste.
+
+Poderiamos tê-lo instalado de maneira global `npm install -g mocha ``em nossa maquina, e bastaria chama-lo diretamente em nosso terminal passando o arquivo de testes ( mocha tests/calculaSituacao.js ).
+
+Entretanto, faremos da maneira mais recomendada e elegante:
+
+vamos adicionar um novo script ao nosso package.json , que chama o mocha e informa um arquivo ou diretório de testes:
+
+package.json
+
+{
+// ...
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha tests"
+  },
+// ...
+}
+
+Dessa forma, não precisamos instalar nada globalmente, e para executar nosso teste basta rodar em nosso terminal o script test , que irá executar =o comando mocha tests utilizando o módulo instalado:
+
+
+npm run test
+Ou simplesmente
+npm test
+
+
+## Testando todos os cenarios possiveis em uma estrutura de codigo
+
+Adicionando os demais comportamento, temos:
+
+  test/calculasituacao.js
+
+
+const { expect } = require('chai');
+
+const calculaSituacao = require('../examples/calculaSituacao');
+
+describe('Quando a média for menor que 7', () => {
+  it('retorna "reprovado"', () => {
+    const resposta = calculaSituacao(4);
+
+    expect(resposta).to.be.equals('reprovado');
+  });
+});
+
+describe('Quando a média for maior que 7', () => {
+  it('retorna "aprovado"', () => {
+    const resposta = calculaSituacao(9);
+
+    expect(resposta).to.be.equals('aprovado');
+  });
+});
+
+describe('Quando a média for igual a 7', () => {
+  it('retorna "aprovado"', () => {
+    const resposta = calculaSituacao(7);
+
+    expect(resposta).to.be.equals('aprovado');
+  });
+});
+
+pronto assim estamos com todos osteste desta aplicação testado
+vamos executar os testes e ver como retornado
+
+Nosso teste agora está validando com sucesso os cenários esperados. Podemos então, aplicar a correção que falta em nosso código e então simplesmente rodar npm test para garantir tanto que o bug foi corrigido, quanto que os outros cenários continuaram funcionando após a correção.
+
+
+# TDD - Transformando requisito em testes
+
+Agora que ja vimos  como utilizar ferramentas para nos ajudar na escrita de teste, vamos novamente refletir sobre o que fizemos ate aqui.
+
+No exemplo de media, começamos pela implementação do codigo, depois escrevemos os testes para validar, então, descrobrimos que havia um cenario que estava funcionando como esperado atraves dos testes , e precisavamos refatorar um erro no codigo , retorna da media e corrigi-lo
+
+e se formos pelo caminho cotrario?, se antes de tentarmos escrever a implemantação , escrever os testes e velo quebrar e depois criar as funções para passar nos testes TDD.
+
+Pensando dessa forma que surgiu o conceito de TDD (Test Driven Development), em tradução livre, Desenvolvimento Orientado a Testes . Esse metodologia é bastante difundida e pode trazer muitos benefícios para o desenvolvimento.
+
+A prática do TDD em começar a escrever os testes que traduzem e validam os comportamentos esperados para aquele código antes de começar a implementação.
+
+A ideia principal é começarmos escrever o código já pensando no que está sendo testado, ou seja, já teremos em mente quais os cenários que precisamos cobrir e também como nosso código precisa estar estruturado para que possamos testá-lo, já que códigos menos estruturados normalmente são mais difíceis de serem testados.
+
+Dessa forma, pensando em passos para o TDD, podemos pensar da seguinte maneira:
+
+1. Antes de qualquer coisa, precisamos interpretar os requisitos, pensando nos comportamentos que iremos implementar e a na estrutura do código: se será uma função, um módulo, quais os inputs, os outputs, etc..
+2. Tendo isso em mente, começamos a escrever os testes, ou seja, criamos a estrutura de describes e its que vimos.
+3. Depois, escrevemos as asserções. Perceba que antes mesmo de ter qualquer código, já iremos criar chamadas a esse código, o que significa que nossos testes irão falhar. Não se preocupe, pois essa é exatamente a ideia nesse momento.
+4. Agora que já temos os testes criados, vamos a implementação do nosso código. A ideia é escrever os códigos pensando nos testes e, conforme vamos cobrindo os cenários, nossos testes que antes quebravam começam a passar.
+
+Se precisar fazer algum ajuste nos testes em algum momento, não se preocupe! Isso é perfeitamente normal, visto que estamos escrevendo testes para código que ainda não existe, e um detalhe ou outro pode escapulir à mente.
+
